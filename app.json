@@ -1,10 +1,10 @@
 {
-  "name": "aqua-demo",
-  "displayName": "aqua-demo",
+  "name": "aquaWarranty",
+  "displayName": "Aqua Warranty",
   "expo": {
-    "name": "aqua-demo",
-    "slug": "aqua-demo",
-    "scheme": "aqua-demo",
+    "name": "aquaWarranty",
+    "slug": "aquaWarranty",
+    "scheme": "aquaWarranty",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
