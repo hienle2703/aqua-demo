@@ -33,9 +33,15 @@ const palette = {
 
   overlay20: "rgba(25, 16, 21, 0.2)",
   overlay50: "rgba(25, 16, 21, 0.5)",
+
+  aquaPrimary: "#003DA5",
 } as const
 
 export const colors = {
+  /**
+   * Primary color of Aquaa
+   */
+  aquaPrimary: palette.aquaPrimary,
   /**
    * The palette is available to use, but prefer using the name.
    * This is only included for rare, one-off cases. Try to use
@@ -65,7 +71,8 @@ export const colors = {
   /**
    * The main tinting color.
    */
-  tint: palette.primary500,
+  // tint: palette.primary500,
+  tint: palette.aquaPrimary,
   /**
    * The inactive tinting color.
    */

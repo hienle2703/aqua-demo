@@ -1,136 +1,258 @@
-import { FC } from "react"
-import { Image, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
-import { ListItem, Screen, Text } from "../components"
+import { FC, useState } from "react"
+import { FlatList, Image, Modal, StatusBar, TouchableOpacity, View } from "react-native"
+import { Icon, Text } from "../components"
 import { DemoTabScreenProps } from "../navigators/DemoNavigator"
-import { $styles } from "../theme"
-import { openLinkInBrowser } from "../utils/openLinkInBrowser"
-import { isRTL } from "../i18n"
-import type { ThemedStyle } from "@/theme"
+import { $styles, colors } from "../theme"
 import { useAppTheme } from "@/utils/useAppTheme"
+import React from "react"
+import DateTimePicker from "react-native-ui-datepicker"
+import dayjs from "dayjs"
+import { se } from "date-fns/locale"
 
-const chainReactLogo = require("../../assets/images/demo/cr-logo.png")
-const reactNativeLiveLogo = require("../../assets/images/demo/rnl-logo.png")
-const reactNativeRadioLogo = require("../../assets/images/demo/rnr-logo.png")
-const reactNativeNewsletterLogo = require("../../assets/images/demo/rnn-logo.png")
+const headerAqua = require("../../assets/images/aqua/header.png")
+const success = require("../../assets/images/aqua/success.png")
+const waitingIcon = require("../../assets/images/aqua/waiting.png")
+const notFoundIcon = require("../../assets/images/aqua/not-found.png")
+
+const data = [
+  {
+    id: "1234729174912",
+    warrantId: "JG6AFE",
+    name: "Máy lạnh - AQUA - KRV9WNZ INDOOR",
+    client: "CÔ LAN - 0926764789",
+    status: "SUCCESS",
+  },
+  {
+    id: "1234729174943",
+    warrantId: "JG6AFE",
+    name: "Máy lạnh - AQUA - KRV9WNZ INDOOR",
+    client: "CÔ LAN - 0926764789",
+    status: "WAITING",
+  },
+  {
+    id: "1234729174954",
+    warrantId: "JG6AFE",
+    name: "Máy lạnh - AQUA - KRV9WNZ INDOOR",
+    client: "CÔ LAN - 0926764789",
+    status: "SUCCESS",
+  },
+  {
+    id: "1234729174920",
+    warrantId: "JG6AFE",
+    name: "Máy lạnh - AQUA - KRV9WNZ INDOORRRRR",
+    client: "CÔ LAN - 0926764789",
+    status: "NOT_FOUND",
+  },
+  {
+    id: "1234729174934",
+    warrantId: "JG6AFE",
+    name: "Máy lạnh - AQUA - KRV9WNZ INDOOR",
+    client: "CÔ LAN - 0926764789",
+    status: "SUCCESS",
+  },
+  {
+    id: "1234729174927",
+    warrantId: "JG6AFE",
+    name: "Máy lạnh - AQUA - KRV9WNZ INDOOR",
+    client: "CÔ LAN - 0926764789",
+    status: "SUCCESS",
+  },
+  {
+    id: "1234729174964",
+    warrantId: "JG6AFE",
+    name: "Máy lạnh - AQUA - KRV9WNZ INDOOR",
+    client: "CÔ LAN - 0926764789",
+    status: "WAITING",
+  },
+]
+
+const data_filter = [
+  {
+    status: "ALL",
+  },
+  {
+    status: "WAITING",
+  },
+  {
+    status: "SUCCESS",
+  },
+  {
+    status: "NOT_FOUND",
+  },
+]
 
 export const DemoCommunityScreen: FC<DemoTabScreenProps<"DemoCommunity">> =
   function DemoCommunityScreen(_props) {
-    const { themed } = useAppTheme()
+    const [dataList, setDataList] = useState(data)
+    const [isOpenCalendar, setIsOpenCalendar] = useState(false)
+    const [isOpenFilter, setIsOpenFilter] = useState(false)
+    const [startDate, setStartDate] = useState(() => {
+      const date = new Date()
+      date.setDate(date.getDate() - 7)
+      return date.toISOString()
+    })
+    const [endDate, setEndDate] = useState(new Date().toISOString())
+    const [statusFilter, setStatusFilter] = useState("ALL")
+
+    const onOpenCalendar = () => setIsOpenCalendar(true)
+
+    const onOpenFilter = () => setIsOpenFilter(true)
+
+    const statusImage: any = (status: string) => {
+      switch (status) {
+        case "SUCCESS":
+          return success
+        case "WAITING":
+          return waitingIcon
+        case "NOT_FOUND":
+          return notFoundIcon
+        default:
+          return notFoundIcon
+      }
+    }
+
+    const statusText = (status: string) => {
+      switch (status) {
+        case "ALL":
+          return "Tất cả"
+        case "SUCCESS":
+          return "ĐKBH Thành công"
+        case "WAITING":
+          return "ĐKBH chờ xử lý"
+        case "NOT_FOUND":
+          return "Không tìm thấy số máy"
+        default:
+          return "Không tìm thấy số máy"
+      }
+    }
+
+    const statusColor = (status: string) => {
+      switch (status) {
+        case "SUCCESS":
+          return "#27AE60"
+        case "WAITING":
+          return "#F2994A"
+        case "NOT_FOUND":
+          return "#EB5757"
+        default:
+          return "#EB5757"
+      }
+    }
+
+    const renderList = ({ item, index }: any) => {
+      return (
+        <View key={`keyItem${index} ${item.id}`} style={$styles.itemContainer}>
+          <View style={$styles.statusContainer}>
+            <Image
+              style={$styles.imageStatus}
+              source={statusImage(item.status)}
+              resizeMode="contain"
+            />
+            <Text style={[$styles.statusTxt, { color: statusColor(item.status) }]}>
+              {statusText(item.status)}
+            </Text>
+          </View>
+          <View style={$styles.infoColumn}>
+            <Text style={$styles.idText}>{item.id}</Text>
+            <Text style={$styles.warrantText}>Mã BH: {item.warrantId}</Text>
+            <Text>{item.name}</Text>
+            <Text>{item.client}</Text>
+          </View>
+        </View>
+      )
+    }
+
     return (
-      <Screen preset="scroll" contentContainerStyle={$styles.container} safeAreaEdges={["top"]}>
-        <Text preset="heading" tx="demoCommunityScreen:title" style={themed($title)} />
-        <Text tx="demoCommunityScreen:tagLine" style={themed($tagline)} />
+      <View style={$styles.container2}>
+        <StatusBar barStyle="light-content" />
+        <Image style={{ width: "100%", height: 140 }} resizeMode="stretch" source={headerAqua} />
+        <View style={$styles.bodyContainer}>
+          <TouchableOpacity style={$styles.calendarPickButton} onPress={onOpenCalendar}>
+            <Icon icon="calendar" size={20} color={colors.tint} />
+            <Text
+              style={$styles.calendarText}
+            >{`${dayjs(startDate).format("DD/MM/YYYY")} - ${dayjs(endDate).format("DD/MM/YYYY")}`}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[$styles.calendarPickButton, $styles.filterButton]}
+            onPress={onOpenFilter}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Icon icon="search" size={20} color={colors.tint} />
+              <Text style={$styles.calendarText}>{statusText(statusFilter)}</Text>
+            </View>
+            <Icon icon="downArrow" size={20} />
+          </TouchableOpacity>
 
-        <Text preset="subheading" tx="demoCommunityScreen:joinUsOnSlackTitle" />
-        <Text tx="demoCommunityScreen:joinUsOnSlack" style={themed($description)} />
-        <ListItem
-          tx="demoCommunityScreen:joinSlackLink"
-          leftIcon="slack"
-          rightIcon={isRTL ? "caretLeft" : "caretRight"}
-          onPress={() => openLinkInBrowser("https://community.infinite.red/")}
-        />
-        <Text
-          preset="subheading"
-          tx="demoCommunityScreen:makeIgniteEvenBetterTitle"
-          style={themed($sectionTitle)}
-        />
-        <Text tx="demoCommunityScreen:makeIgniteEvenBetter" style={themed($description)} />
-        <ListItem
-          tx="demoCommunityScreen:contributeToIgniteLink"
-          leftIcon="github"
-          rightIcon={isRTL ? "caretLeft" : "caretRight"}
-          onPress={() => openLinkInBrowser("https://github.com/infinitered/ignite")}
-        />
+          <FlatList
+            data={dataList}
+            extraData={dataList}
+            renderItem={renderList}
+            contentContainerStyle={$styles.listContainer}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
 
-        <Text
-          preset="subheading"
-          tx="demoCommunityScreen:theLatestInReactNativeTitle"
-          style={themed($sectionTitle)}
-        />
-        <Text tx="demoCommunityScreen:theLatestInReactNative" style={themed($description)} />
-        <ListItem
-          tx="demoCommunityScreen:reactNativeRadioLink"
-          bottomSeparator
-          rightIcon={isRTL ? "caretLeft" : "caretRight"}
-          LeftComponent={
-            <View style={[$styles.row, themed($logoContainer)]}>
-              <Image source={reactNativeRadioLogo} style={$logo} />
-            </View>
-          }
-          onPress={() => openLinkInBrowser("https://reactnativeradio.com/")}
-        />
-        <ListItem
-          tx="demoCommunityScreen:reactNativeNewsletterLink"
-          bottomSeparator
-          rightIcon={isRTL ? "caretLeft" : "caretRight"}
-          LeftComponent={
-            <View style={[$styles.row, themed($logoContainer)]}>
-              <Image source={reactNativeNewsletterLogo} style={$logo} />
-            </View>
-          }
-          onPress={() => openLinkInBrowser("https://reactnativenewsletter.com/")}
-        />
-        <ListItem
-          tx="demoCommunityScreen:reactNativeLiveLink"
-          bottomSeparator
-          rightIcon={isRTL ? "caretLeft" : "caretRight"}
-          LeftComponent={
-            <View style={[$styles.row, themed($logoContainer)]}>
-              <Image source={reactNativeLiveLogo} style={$logo} />
-            </View>
-          }
-          onPress={() => openLinkInBrowser("https://rn.live/")}
-        />
-        <ListItem
-          tx="demoCommunityScreen:chainReactConferenceLink"
-          rightIcon={isRTL ? "caretLeft" : "caretRight"}
-          LeftComponent={
-            <View style={[$styles.row, themed($logoContainer)]}>
-              <Image source={chainReactLogo} style={$logo} />
-            </View>
-          }
-          onPress={() => openLinkInBrowser("https://cr.infinite.red/")}
-        />
-        <Text
-          preset="subheading"
-          tx="demoCommunityScreen:hireUsTitle"
-          style={themed($sectionTitle)}
-        />
-        <Text tx="demoCommunityScreen:hireUs" style={themed($description)} />
-        <ListItem
-          tx="demoCommunityScreen:hireUsLink"
-          leftIcon="clap"
-          rightIcon={isRTL ? "caretLeft" : "caretRight"}
-          onPress={() => openLinkInBrowser("https://infinite.red/contact")}
-        />
-      </Screen>
+        <Modal
+          visible={isOpenCalendar}
+          animationType="slide"
+          transparent
+          onRequestClose={() => setIsOpenCalendar(false)}
+        >
+          <View style={$styles.modalContainer}>
+            <DateTimePicker
+              mode="range"
+              startDate={startDate}
+              endDate={endDate}
+              onChange={({ startDate, endDate }: any) => {
+                setStartDate(startDate)
+                setEndDate(endDate)
+              }}
+            />
+            <TouchableOpacity onPress={() => setIsOpenCalendar(false)}>
+              <Text>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+
+        <Modal
+          visible={isOpenFilter}
+          animationType="slide"
+          transparent
+          onRequestClose={() => setIsOpenFilter(false)}
+        >
+          <View style={$styles.modalFilterContainer}>
+            <View style={$styles.topbar} />
+            {data_filter.map((item, index) => {
+              const chooseFilter = () => {
+                setStatusFilter(item.status)
+                setIsOpenFilter(false)
+
+                switch(item.status) {
+                  case "ALL":
+                    setDataList(data)
+                    break
+                  case "SUCCESS":
+                    setDataList(data.filter((item) => item.status === "SUCCESS"))
+                    break
+                  case "WAITING":
+                    setDataList(data.filter((item) => item.status === "WAITING"))
+                    break
+                  case "NOT_FOUND":
+                    setDataList(data.filter((item) => item.status === "NOT_FOUND"))
+                    break
+                  default:
+                    setDataList(data)
+                }
+              }
+              return (
+                <TouchableOpacity key={index} onPress={chooseFilter} style={[$styles.filterBtn, index == 0 && {borderTopLeftRadius: 10, borderTopRightRadius: 10}]}>
+                  <Text>{statusText(item.status)}</Text>
+                </TouchableOpacity>
+              )
+            })}
+          </View>
+        </Modal>
+      </View>
     )
   }
-
-const $title: ThemedStyle<TextStyle> = ({ spacing }) => ({
-  marginBottom: spacing.sm,
-})
-
-const $tagline: ThemedStyle<TextStyle> = ({ spacing }) => ({
-  marginBottom: spacing.xxl,
-})
-
-const $description: ThemedStyle<TextStyle> = ({ spacing }) => ({
-  marginBottom: spacing.lg,
-})
-
-const $sectionTitle: ThemedStyle<TextStyle> = ({ spacing }) => ({
-  marginTop: spacing.xxl,
-})
-
-const $logoContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  marginEnd: spacing.md,
-  flexWrap: "wrap",
-  alignContent: "center",
-  alignSelf: "stretch",
-})
-
-const $logo: ImageStyle = {
-  height: 38,
-  width: 38,
-}

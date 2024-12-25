@@ -89,7 +89,7 @@ export function Icon(props: IconProps) {
 
 export const iconRegistry = {
   back: require("../../assets/icons/back.png"),
-  bell: require("../../assets/icons/bell.png"),
+  // bell: require("../../assets/icons/bell.png"),
   caretLeft: require("../../assets/icons/caretLeft.png"),
   caretRight: require("../../assets/icons/caretRight.png"),
   check: require("../../assets/icons/check.png"),
@@ -110,6 +110,15 @@ export const iconRegistry = {
   slack: require("../../assets/icons/demo/slack.png"),
   view: require("../../assets/icons/view.png"),
   x: require("../../assets/icons/x.png"),
+
+  // Aqua
+  warrant: require("../../assets/icons/aqua/warrant.png"),
+  bell: require("../../assets/icons/aqua/bell.png"),
+  list: require("../../assets/icons/aqua/list.png"),
+  threeDot: require("../../assets/icons/aqua/threeDot.png"),
+  calendar:  require("../../assets/icons/aqua/calendar.png"),
+  search:  require("../../assets/icons/aqua/search.png"),
+  downArrow:  require("../../assets/icons/aqua/down-arrow.png"),
 }
 
 const $imageStyleBase: ImageStyle = {

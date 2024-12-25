@@ -14,6 +14,7 @@ import { DemoNavigator, DemoTabParamList } from "./DemoNavigator"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { useAppTheme, useThemeProvider } from "@/utils/useAppTheme"
 import { ComponentProps } from "react"
+import React from "react"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -63,9 +64,9 @@ const AppStack = observer(function AppStack() {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        navigationBarColor: colors.background,
+        navigationBarColor: "white",
         contentStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: "white",
         },
       }}
       initialRouteName={isAuthenticated ? "Welcome" : "Login"}

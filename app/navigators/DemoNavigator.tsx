@@ -59,9 +59,9 @@ export function DemoNavigator() {
         name="DemoShowroom"
         component={DemoShowroomScreen}
         options={{
-          tabBarLabel: translate("demoNavigator:componentsTab"),
+          tabBarLabel: "Đăng ký BH",
           tabBarIcon: ({ focused }) => (
-            <Icon icon="components" color={focused ? colors.tint : colors.tintInactive} size={30} />
+            <Icon icon="warrant" color={focused ? colors.aquaPrimary : colors.tintInactive} size={30} />
           ),
         }}
       />
@@ -70,9 +70,9 @@ export function DemoNavigator() {
         name="DemoCommunity"
         component={DemoCommunityScreen}
         options={{
-          tabBarLabel: translate("demoNavigator:communityTab"),
+          tabBarLabel: "Danh sách",
           tabBarIcon: ({ focused }) => (
-            <Icon icon="community" color={focused ? colors.tint : colors.tintInactive} size={30} />
+            <Icon icon="list" color={focused ? colors.aquaPrimary : colors.tintInactive} size={30} />
           ),
         }}
       />
@@ -81,10 +81,10 @@ export function DemoNavigator() {
         name="DemoPodcastList"
         component={DemoPodcastListScreen}
         options={{
-          tabBarAccessibilityLabel: translate("demoNavigator:podcastListTab"),
-          tabBarLabel: translate("demoNavigator:podcastListTab"),
+          tabBarAccessibilityLabel: "Thông báo",
+          tabBarLabel: "Thông báo",
           tabBarIcon: ({ focused }) => (
-            <Icon icon="podcast" color={focused ? colors.tint : colors.tintInactive} size={30} />
+            <Icon icon="bell" color={focused ? colors.aquaPrimary : colors.tintInactive} size={30} />
           ),
         }}
       />
@@ -93,9 +93,9 @@ export function DemoNavigator() {
         name="DemoDebug"
         component={DemoDebugScreen}
         options={{
-          tabBarLabel: translate("demoNavigator:debugTab"),
+          tabBarLabel: "Khác",
           tabBarIcon: ({ focused }) => (
-            <Icon icon="debug" color={focused ? colors.tint : colors.tintInactive} size={30} />
+            <Icon icon="threeDot" color={focused ? colors.aquaPrimary : colors.tintInactive} size={30} />
           ),
         }}
       />
@@ -104,8 +104,8 @@ export function DemoNavigator() {
 }
 
 const $tabBar: ThemedStyle<ViewStyle> = ({ colors }) => ({
-  backgroundColor: colors.background,
-  borderTopColor: colors.transparent,
+  backgroundColor: "white",
+  // borderTopColor: colors.transparent,
 })
 
 const $tabBarItem: ThemedStyle<ViewStyle> = ({ spacing }) => ({
